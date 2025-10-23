@@ -56,22 +56,28 @@ def advanced(t, y ):
 
 if __name__ == "__main__":
     h = 4
-    phi = -math.acos(h/((1-a)*L))
-    theta = math.acos(h/((1-a)*L)) -math.pi
+    phi = -math.asin(h/((1-a)*L))
+    theta = math.asin(h/((1-a)*L)) -math.pi
     y0 = [phi,  0.0, theta, 0.0]
-    t = np.linspace(0,3, 50)
-    sol = solve_ivp(advanced,[0,3], y0, t_eval=t)
+    t = np.linspace(0,10, 500)
+    sol = solve_ivp(advanced,[0,10], y0, t_eval=t)
     print(sol)
 
 
 
-    positions = np.zeros((len(sol.t),2))
+    positions = np.zeros((len(sol.t),4))
     for i in range(len(sol.t)):
         positions[i][0] = (1-a) * L* math.cos(sol.y[0][i])+ math.cos(sol.y[2][i]+ sol.y[0][i])* l
         positions[i][1] = (1-a) * L* math.sin(sol.y[0][i])+ math.sin(sol.y[2][i]+ sol.y[0][i])* l + h
+        positions[i][2] = (1-a) * L* math.cos(sol.y[0][i])
+        positions[i][3] = (1-a) * L* math.sin(sol.y[0][i])+ h
     
     plt.subplot(2,3,1)
     plt.plot(positions[:,0], positions[:,1], label='Pendulum Path')
+    plt.plot(positions[:,2], positions[:,3], label='Path')
+    plt.plot([0,0],[0,h])
+    plt.plot([-L-l,L+l],[0,0])
+    plt.legend()
     plt.subplot(2,3,2)
     plt.plot(sol.t, sol.y[0], label='Angle $\phi$')
     plt.xlabel('Time [s]')
