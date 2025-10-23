@@ -33,7 +33,7 @@ if __name__ == "__main__":
     k = g*L*(a*M - (0.5-a)*m)/(inertia)
     print(f"k:{k}")
     h = 4
-    startAngle = -math.acos(h/((1-a)*L))
+    startAngle = -math.sin(h/((1-a)*L))
     y0 = [startAngle,0.0]
     t = np.linspace(0,3, 50)
     energyLaw()
